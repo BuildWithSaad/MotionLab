@@ -1,52 +1,87 @@
 import { useEffect, useState, useRef } from 'react'
 
+interface ParallaxData {
+  offsetSlow: number      // ~0.08 speed (background shapes)
+  offsetMedium: number    // ~0.16 speed (midground cards)
+  offsetOpposite: number  // ~-0.12 speed (counter-moving foreground)
+  progress: number        // 0.0 to 1.0 progress through element's viewport journey
+  scrollAngle: number     // 0 to 360 degrees continuous rotation
+}
+
 /**
- * Provides a subtle, restrained parallax translation (max +/- 24px)
- * using requestAnimationFrame for 60fps compositor performance.
- * Respects prefers-reduced-motion by returning 0 offset.
+ * High-performance scroll hook computing multi-layer parallax offsets and continuous
+ * scroll-linked rotation/progress with requestAnimationFrame and prefers-reduced-motion fallback.
  */
-export function useParallax(speed: number = 0.08, maxOffset: number = 24) {
-  const [offsetY, setOffsetY] = useState(0)
-  const elementRef = useRef<HTMLDivElement | null>(null)
+export function useParallaxContainer() {
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const [data, setData] = useState<ParallaxData>({
+    offsetSlow: 0,
+    offsetMedium: 0,
+    offsetOpposite: 0,
+    progress: 0,
+    scrollAngle: 0,
+  })
 
   useEffect(() => {
-    // Check reduced-motion preference
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (mediaQuery.matches) {
-      setOffsetY(0)
       return
     }
 
     let ticking = false
 
-    function handleScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          if (elementRef.current) {
-            const rect = elementRef.current.getBoundingClientRect()
-            const windowHeight = window.innerHeight
-            // Element relative to viewport center
-            const elementCenter = rect.top + rect.height / 2
-            const viewportCenter = windowHeight / 2
-            const distance = elementCenter - viewportCenter
+    function update() {
+      if (!containerRef.current) {
+        ticking = false
+        return
+      }
 
-            // Restrain calculation within [-maxOffset, maxOffset]
-            const calculated = Math.max(-maxOffset, Math.min(maxOffset, -distance * speed))
-            setOffsetY(calculated)
-          }
-          ticking = false
-        })
+      const rect = containerRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+
+      // Progress: 0 when element top enters viewport bottom, 1 when element bottom exits viewport top
+      const totalDistance = windowHeight + rect.height
+      const currentPos = windowHeight - rect.top
+      const rawProgress = Math.max(0, Math.min(1, currentPos / totalDistance))
+
+      // Center distance: 0 when element center aligns with viewport center
+      const elementCenter = rect.top + rect.height / 2
+      const viewportCenter = windowHeight / 2
+      const distanceFromCenter = elementCenter - viewportCenter
+
+      // Restrained offsets with safe maximum clamps (+/- 45px)
+      const slow = Math.max(-30, Math.min(30, -distanceFromCenter * 0.08))
+      const medium = Math.max(-50, Math.min(50, -distanceFromCenter * 0.18))
+      const opposite = Math.max(-40, Math.min(40, distanceFromCenter * 0.12))
+      const angle = (rawProgress * 360) % 360
+
+      setData({
+        offsetSlow: Math.round(slow * 10) / 10,
+        offsetMedium: Math.round(medium * 10) / 10,
+        offsetOpposite: Math.round(opposite * 10) / 10,
+        progress: Math.round(rawProgress * 100) / 100,
+        scrollAngle: Math.round(angle),
+      })
+
+      ticking = false
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(update)
         ticking = true
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    update()
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
     }
-  }, [speed, maxOffset])
+  }, [])
 
-  return { ref: elementRef, offsetY }
+  return { ref: containerRef, ...data }
 }

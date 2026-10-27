@@ -4,16 +4,26 @@ import type { EffectItem } from '../../data/effects'
 import {
   GradientBgPreview,
   FloatingOrbsPreview,
+  AnimatedGridPreview,
   GradientTextPreview,
   FadeSlidePreview,
   StaggeredCardsPreview,
   ButtonHoverPreview,
   CardLiftPreview,
   ImageZoomPreview,
-  AnimatedUnderlinePreview,
-  IconMovementPreview,
+  AnimatedUnderlineIconPreview,
   ScrollRevealPreview,
+  ScrollProgressPreview,
+  StickyNavPreview,
+  ParallaxPreview,
   InteractiveTabsPreview,
+  AccordionPreview,
+  ModalDrawerPreview,
+  FeedbackStatesPreview,
+  TiltCardMiniPreview,
+  ClipPathMiniPreview,
+  ScrollLinkedMiniPreview,
+  ViewTransitionPreview,
 } from './GalleryPreviews'
 
 interface DemoCardProps {
@@ -31,7 +41,6 @@ export default function DemoCard({ effect }: DemoCardProps) {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      // Fallback if clipboard API is restricted
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
@@ -46,18 +55,20 @@ export default function DemoCard({ effect }: DemoCardProps) {
     interactive: 'bg-accent-pink/15 text-accent-pink border-accent-pink/30',
   }
 
-  // Map effect ID to live visual preview component
+  // Map effect ID to live visual preview component (all 22 effects)
   const renderPreview = () => {
     switch (effect.id) {
       case 'gradient-bg':
         return <GradientBgPreview />
       case 'floating-orbs':
         return <FloatingOrbsPreview />
+      case 'animated-grid':
+        return <AnimatedGridPreview />
       case 'gradient-text':
         return <GradientTextPreview />
       case 'fade-slide-entrance':
         return <FadeSlidePreview />
-      case 'staggered-cards':
+      case 'staggered-entrance':
         return <StaggeredCardsPreview />
       case 'button-hover':
         return <ButtonHoverPreview />
@@ -65,14 +76,32 @@ export default function DemoCard({ effect }: DemoCardProps) {
         return <CardLiftPreview />
       case 'image-zoom':
         return <ImageZoomPreview />
-      case 'animated-underline':
-        return <AnimatedUnderlinePreview />
-      case 'icon-movement':
-        return <IconMovementPreview />
-      case 'scroll-reveal-simulation':
+      case 'animated-underline-icon':
+        return <AnimatedUnderlineIconPreview />
+      case 'scroll-reveal':
         return <ScrollRevealPreview />
-      case 'interactive-tabs':
+      case 'scroll-progress':
+        return <ScrollProgressPreview />
+      case 'sticky-nav':
+        return <StickyNavPreview />
+      case 'parallax-movement':
+        return <ParallaxPreview />
+      case 'animated-tabs':
         return <InteractiveTabsPreview />
+      case 'accordion-animation':
+        return <AccordionPreview />
+      case 'modal-drawer':
+        return <ModalDrawerPreview />
+      case 'feedback-states':
+        return <FeedbackStatesPreview />
+      case 'tilt-card':
+        return <TiltCardMiniPreview />
+      case 'clip-path-reveal':
+        return <ClipPathMiniPreview />
+      case 'scroll-linked':
+        return <ScrollLinkedMiniPreview />
+      case 'view-transition':
+        return <ViewTransitionPreview />
       default:
         return null
     }
@@ -90,16 +119,16 @@ export default function DemoCard({ effect }: DemoCardProps) {
           >
             {effect.categoryLabel}
           </span>
-          <span className="text-[11px] font-mono text-text-muted">
+          <span className="text-[11px] font-mono text-text-muted truncate max-w-[180px]">
             {effect.cssTechnique}
           </span>
         </div>
 
-        <h3 className="text-lg font-bold text-text-primary tracking-tight mb-1.5">
+        <h3 className="text-base font-bold text-text-primary tracking-tight mb-1.5">
           {effect.name}
         </h3>
 
-        <p className="text-xs text-text-secondary leading-relaxed">
+        <p className="text-xs text-text-secondary leading-relaxed line-clamp-3">
           {effect.definition}
         </p>
       </div>
