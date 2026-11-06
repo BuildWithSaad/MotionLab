@@ -68,11 +68,18 @@ export default function Navbar() {
       )}
       style={{ transitionDuration: 'var(--duration-normal)' }}
     >
-      <nav className="container-main flex items-center justify-between h-16 md:h-18" aria-label="Main navigation">
+      <nav className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex items-center justify-between h-16 md:h-18" aria-label="Main navigation">
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-          <span className="gradient-text">Motion</span>
-          <span className="text-text-primary">Lab</span>
+        <a
+          href="#hero"
+          className="group flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan rounded-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          aria-label="MotionLab Home"
+        >
+          <img
+            src="/logo.png"
+            alt="MotionLab"
+            className="h-9 sm:h-10 md:h-11 lg:h-12 w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_12px_rgba(34,211,238,0.18)] group-hover:drop-shadow-[0_4px_22px_rgba(124,58,237,0.4)]"
+          />
         </a>
 
         {/* Desktop links */}
@@ -126,7 +133,13 @@ export default function Navbar() {
         style={{ transitionDuration: 'var(--duration-normal)', transitionTimingFunction: 'var(--ease-smooth)' }}
       >
         <div className="flex items-center justify-between px-5 h-16 border-b border-surface-border">
-          <span className="text-sm font-semibold text-text-secondary uppercase tracking-wider">Menu</span>
+          <a href="#hero" onClick={closeMenu} className="flex items-center" aria-label="MotionLab Home">
+            <img
+              src="/logo.png"
+              alt="MotionLab"
+              className="h-8 w-auto object-contain drop-shadow-[0_2px_10px_rgba(34,211,238,0.2)]"
+            />
+          </a>
           <button
             onClick={closeMenu}
             className="flex items-center justify-center min-w-[44px] min-h-[44px] rounded-md text-text-secondary hover:text-text-primary hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan cursor-pointer"

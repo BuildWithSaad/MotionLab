@@ -466,7 +466,10 @@ export function StickyNavPreview() {
               : 'bg-transparent'
           }`}
         >
-          <span className="font-bold gradient-text">MotionLab</span>
+          <div className="flex items-center gap-1.5">
+            <img src="/logo-icon.png" alt="" className="h-3.5 w-auto object-contain" />
+            <span className="font-bold gradient-text">MotionLab</span>
+          </div>
           <span className="text-[10px] text-text-muted font-mono">{scrolled ? 'Scrolled' : 'Top'}</span>
         </div>
 

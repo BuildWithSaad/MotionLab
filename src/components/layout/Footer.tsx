@@ -17,9 +17,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           {/* Brand */}
           <div>
-            <a href="#hero" className="inline-flex items-center gap-2 text-lg font-bold tracking-tight mb-3">
-              <span className="gradient-text">Motion</span>
-              <span className="text-text-primary">Lab</span>
+            <a
+              href="#hero"
+              className="group inline-flex items-center mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan rounded-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              aria-label="MotionLab Home"
+            >
+              <img
+                src="/logo.png"
+                alt="MotionLab"
+                className="h-10 sm:h-11 md:h-12 w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_12px_rgba(34,211,238,0.18)] group-hover:drop-shadow-[0_4px_22px_rgba(124,58,237,0.4)]"
+              />
             </a>
             <p className="text-sm text-text-secondary max-w-xs leading-relaxed">
               An interactive playground for learning website animations, UI effects, and micro-interactions through live demonstrations.

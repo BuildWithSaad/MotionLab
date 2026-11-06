@@ -333,15 +333,134 @@ img {
 .hero-gradient-bg {
   background: linear-gradient(
     135deg,
-    #080c16 0%,
-    #130f30 25%,
-    #0c1426 50%,
-    #091322 75%,
-    #080c16 100%
+    #060911 0%,
+    #100c28 20%,
+    #0a1020 40%,
+    #080e1c 60%,
+    #0d0824 80%,
+    #060911 100%
   );
-  background-size: 300% 300%;
-  animation: gradient-shift 16s ease-in-out infinite;
+  background-size: 400% 400%;
+  animation: gradient-shift 20s ease-in-out infinite;
   will-change: background-position;
+}
+
+
+/* ============================================================
+   Hero Noise Texture — film grain for premium depth
+   ============================================================ */
+
+.hero-noise {
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
+
+/* ============================================================
+   Hero — Shimmer Gradient Text
+   ============================================================ */
+
+.hero-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-violet) 0%,
+    var(--color-accent-cyan) 30%,
+    #c084fc 50%,
+    var(--color-accent-cyan) 70%,
+    var(--color-accent-violet) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: hero-shimmer 4s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@keyframes hero-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+
+/* ============================================================
+   Hero — Rotating Gradient Border Badge
+   ============================================================ */
+
+.hero-badge-border {
+  background: conic-gradient(
+    from var(--hero-badge-angle, 0deg),
+    var(--color-accent-violet),
+    var(--color-accent-cyan),
+    var(--color-accent-pink),
+    var(--color-accent-violet)
+  );
+  animation: hero-badge-spin 4s linear infinite;
+}
+
+@keyframes hero-badge-spin {
+  to { --hero-badge-angle: 360deg; }
+}
+
+@property --hero-badge-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+
+/* ============================================================
+   Hero — Sparkle Icon Rotation
+   ============================================================ */
+
+.hero-icon-spin {
+  animation: hero-icon-rotate 6s linear infinite;
+}
+
+@keyframes hero-icon-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+/* ============================================================
+   Hero — Animated Gradient Separator Line
+   ============================================================ */
+
+.hero-gradient-line {
+  width: 80px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent-violet), var(--color-accent-cyan), transparent);
+  background-size: 200% 100%;
+  animation: hero-line-sweep 3s ease-in-out infinite;
+}
+
+@keyframes hero-line-sweep {
+  0%, 100% { background-position: -100% 0; }
+  50% { background-position: 200% 0; }
+}
+
+
+/* ============================================================
+   Hero — Feature Pill Hover
+   ============================================================ */
+
+.hero-pill {
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  transition: all 300ms var(--ease-smooth);
+}
+
+.hero-pill:hover {
+  border-color: var(--color-surface-border);
+  background: rgba(124, 58, 237, 0.06);
+  color: var(--color-text-secondary);
 }
 
 
@@ -397,6 +516,25 @@ img {
 
   .hero-gradient-bg {
     animation: none !important;
+  }
+
+  .hero-shimmer-text {
+    background-size: 100% 100% !important;
+    animation: none !important;
+  }
+
+  .hero-badge-border {
+    background: var(--color-surface-border) !important;
+    animation: none !important;
+  }
+
+  .hero-icon-spin {
+    animation: none !important;
+  }
+
+  .hero-gradient-line {
+    animation: none !important;
+    background-size: 100% 100% !important;
   }
 }
 
